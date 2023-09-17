@@ -1,4 +1,3 @@
-import { rejects } from 'assert';
 import axios, { AxiosInstance } from 'axios';
 import config from '../config';
 
@@ -15,8 +14,8 @@ const HttpService = (baseUrl: string): AxiosInstance => {
     (config) => {
       return config;
     },
-    (err) => {
-      return err;
+    (error) => {
+      return error;
     }
   );
 
@@ -24,8 +23,8 @@ const HttpService = (baseUrl: string): AxiosInstance => {
     (response) => {
       return response.data;
     },
-    (err) => {
-      return Promise.reject(err);
+    (error) => {
+      return Promise.reject(error);
     }
   );
 
