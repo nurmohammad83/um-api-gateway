@@ -1,11 +1,11 @@
 import { CoreService as HttpService } from '../../../shared/axios';
 import { NextFunction, Request, Response } from 'express';
 import sendResponse from '../../../shared/response';
-import { AcademicSemesterService } from './academicSemester.service';
+import { AcademicDepartmentService } from './academicDepartment.service';
 
 const insertIntoDB = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const result = await AcademicSemesterService.insertIntoDB(req);
+    const result = await AcademicDepartmentService.insertIntoDB(req);
     sendResponse(res, result);
   } catch (error) {
     next(error);
@@ -14,7 +14,7 @@ const insertIntoDB = async (req: Request, res: Response, next: NextFunction) => 
 
 const getAllFromDb = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const result = await AcademicSemesterService.getAllFromDb(req);
+    const result = await AcademicDepartmentService.getAllFromDb(req);
     sendResponse(res, result);
   } catch (error) {
     next(error);
@@ -22,7 +22,7 @@ const getAllFromDb = async (req: Request, res: Response, next: NextFunction) => 
 };
 const getByIdFromDb = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const result = await AcademicSemesterService.getByIdFromDb(req);
+    const result = await AcademicDepartmentService.getByIdFromDb(req);
     sendResponse(res, result);
   } catch (error) {
     next(error);
@@ -30,7 +30,7 @@ const getByIdFromDb = async (req: Request, res: Response, next: NextFunction) =>
 };
 const updateOneIntoDb = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const result = await AcademicSemesterService.updateOneIntoDb(req);
+    const result = await AcademicDepartmentService.updateOneIntoDb(req);
     sendResponse(res, result);
   } catch (error) {
     next(error);
@@ -38,14 +38,14 @@ const updateOneIntoDb = async (req: Request, res: Response, next: NextFunction) 
 };
 const deleteByIdFromDb = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const result = await AcademicSemesterService.deleteByIdFromDb(req);
+    const result = await AcademicDepartmentService.deleteByIdFromDb(req);
     sendResponse(res, result);
   } catch (error) {
     next(error);
   }
 };
 
-export const AcademicSemesterController = {
+export const AcademicDepartmentController = {
   insertIntoDB,
   getByIdFromDb,
   getAllFromDb,
