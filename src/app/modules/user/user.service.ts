@@ -6,35 +6,36 @@ import { IGenericResponse } from '../../../interfaces/common';
 
 const createStudent = async (req: Request) => {
   const file = req.file as IFileUpload;
-  const uploadImage = await FileUploadHelper.uploadToCloudinary(file);
-  if (uploadImage) {
-    req.body.profileImage = uploadImage.secure_url;
+  const uploadedImage = await FileUploadHelper.uploadToCloudinary(file);
+
+  if (uploadedImage) {
+    req.body.profileImage = uploadedImage.secure_url;
   }
 
   const { academicDepartment, academicFaculty, academicSemester } = req.body.student;
 
-  const academicDepartmentData = await AuthService.get(
+  const academicDepartmentResponse = await AuthService.get(
     `/academic-departments?syncId=${academicDepartment}`
   );
 
-  if (academicDepartmentData.data && Array.isArray(academicDepartmentData.data)) {
-    req.body.student.academicDepartment = academicDepartmentData?.data[0]?.id;
+  if (academicDepartmentResponse.data && Array.isArray(academicDepartmentResponse.data)) {
+    req.body.student.academicDepartment = academicDepartmentResponse.data[0].id;
   }
 
-  const academicFacultyData = await AuthService.get(
+  const academicFacultyResponse = await AuthService.get(
     `/academic-faculties?syncId=${academicFaculty}`
   );
 
-  if (academicFacultyData.data && Array.isArray(academicFacultyData.data)) {
-    req.body.student.academicFaculty = academicFacultyData?.data[0]?.id;
+  if (academicFacultyResponse.data && Array.isArray(academicFacultyResponse.data)) {
+    req.body.student.academicFaculty = academicFacultyResponse.data[0].id;
   }
 
-  const academicSemesterData = await AuthService.get(
+  const academicSemesterResponse = await AuthService.get(
     `/academic-semesters?syncId=${academicSemester}`
   );
 
-  if (academicSemesterData.data && Array.isArray(academicSemesterData.data)) {
-    req.body.student.academicSemester = academicSemesterData?.data[0]?.id;
+  if (academicSemesterResponse.data && Array.isArray(academicSemesterResponse.data)) {
+    req.body.student.academicSemester = academicSemesterResponse.data[0].id;
   }
 
   const response: IGenericResponse = await AuthService.post('/users/create-student', req.body, {
@@ -46,4 +47,56 @@ const createStudent = async (req: Request) => {
   return response;
 };
 
-export const UserService = { createStudent };
+const createFaculty = async (req: Request): Promise<IGenericResponse> => {
+  const file = req.file as IFileUpload;
+
+  const uploadedProfileImage = await FileUploadHelper.uploadToCloudinary(file);
+
+  if (uploadedProfileImage) {
+    req.body.faculty.profileImage = uploadedProfileImage.secure_url;
+  }
+
+  const { academicDepartment, academicFaculty } = req.body.faculty;
+
+  const academicDepartmentResponse: IGenericResponse = await AuthService.get(
+    `/academic-departments?syncId=${academicDepartment}`
+  );
+
+  if (academicDepartmentResponse.data && Array.isArray(academicDepartmentResponse.data)) {
+    req.body.faculty.academicDepartment = academicDepartmentResponse.data[0].id;
+  }
+
+  const academicFacultyResponse: IGenericResponse = await AuthService.get(
+    `/academic-faculties?syncId=${academicFaculty}`
+  );
+
+  if (academicFacultyResponse.data && Array.isArray(academicFacultyResponse.data)) {
+    req.body.faculty.academicFaculty = academicFacultyResponse.data[0].id;
+  }
+
+  const response: IGenericResponse = await AuthService.post('/users/create-faculty', req.body, {
+    headers: {
+      Authorization: req.headers.authorization
+    }
+  });
+  return response;
+};
+
+const createAdmin = async (req: Request): Promise<IGenericResponse> => {
+  const file = req.file as IFileUpload;
+
+  const uploadedProfileImage = await FileUploadHelper.uploadToCloudinary(file);
+
+  if (uploadedProfileImage) {
+    req.body.admin.profileImage = uploadedProfileImage.secure_url;
+  }
+
+  const response: IGenericResponse = await AuthService.post('/users/create-admin', req.body, {
+    headers: {
+      Authorization: req.headers.authorization
+    }
+  });
+  return response;
+};
+
+export const UserService = { createStudent, createFaculty, createAdmin };
