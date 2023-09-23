@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const updateFaculty = z.object({
+const updateAdmin = z.object({
   body: z.object({
     name: z.object({
       firstName: z.string().optional(),
@@ -24,12 +24,12 @@ const updateFaculty = z.object({
 
     permanentAddress: z.string().optional(),
 
-    // department: z.string().optional(),
+    department: z.string().optional(),
 
     designation: z.string().optional()
   })
 });
 
-export const FacultyValidation = {
-  updateFaculty
+export const AdminValidation = {
+  updateAdmin
 };
